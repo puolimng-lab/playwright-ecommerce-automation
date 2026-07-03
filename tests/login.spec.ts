@@ -1,10 +1,12 @@
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
 import { LoginPage } from '../pages/LoginPage';
+import { InventoryPage } from '../pages/InventoryPage';
 import { loginData } from '../data/loginData';
 
 for(const data of loginData){
     test(data.title, async ({ page }) => {
         const loginPage = new LoginPage(page);
+        const inventoryPage = new InventoryPage(page);
     
         await loginPage.goto();
     
@@ -14,24 +16,10 @@ for(const data of loginData){
         );
     
         if(data.success){
-            await expect(page).toHaveURL(/inventory/);
-    
-            await expect(
-                page.locator('.app_logo')
-            ).toContainText('Swag Labs');
-        
-            await expect(
-                page.locator('.shopping_cart_link')
-            ).toBeVisible();
+            await inventoryPage.verifyPageLoaded();
         }
         else{
-            await expect(
-                page.locator('[data-test="error"]')
-            ).toBeVisible();
-
-            await expect(
-                page.locator('[data-test="error"]')
-            ).toContainText('Epic sadface');
+            await loginPage.verifyLoginError();
         }
     });
 }
