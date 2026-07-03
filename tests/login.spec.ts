@@ -12,6 +12,14 @@ test('Valid Login', async ({ page }) => {
     );
 
     await expect(page).toHaveURL(/inventory/);
+
+    await expect(
+        page.locator('.app_logo')
+    ).toContainText('Swag Labs');
+
+    await expect(
+        page.locator('.shopping_cart_link')
+    ).toBeVisible();
     // await page.goto('https://www.saucedemo.com/');
     // await page.locator('#user-name').fill('standard_user');
     // await page.locator('#password').fill('secret_sauce');
